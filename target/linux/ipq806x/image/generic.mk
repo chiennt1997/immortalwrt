@@ -508,6 +508,27 @@ define Device/qcom_ipq8064-db149
 	BOARD_NAME := db149
 	DEVICE_PACKAGES := ath10k-firmware-qca99x0-ct
 endef
+
+TARGET_DEVICES += qcom_ipq8064-db149
+
+define Device/ruijie_rg-mtfi-m520 1gb
+	$(Device/dsa-migration)
+	DEVICE_VENDOR := Ruijie
+	DEVICE_MODEL := RG-MTFi-M520 1gb
+	SOC := qcom-ipq8064
+	BLOCKSIZE := 64k
+	KERNEL_SIZE := 4096k
+	KERNEL_SUFFIX := -uImage
+	KERNEL = kernel-bin | append-dtb | uImage none | pad-to $$(KERNEL_SIZE)
+	KERNEL_NAME := zImage
+	IMAGES += factory.bin
+	IMAGE/factory.bin := qsdk-ipq-factory-mmc
+	IMAGE/sysupgrade.bin/squashfs := append-rootfs | pad-to $$$$(BLOCKSIZE) | sysupgrade-tar rootfs=$$$$@ | append-metadata
+	DEVICE_PACKAGES := ath10k-firmware-qca988x-ct kmod-hwmon-lm75 kmod-rtc-pcf8563 \
+		kmod-fs-f2fs losetup mkf2fs
+endef
+TARGET_DEVICES += ruijie_rg-mtfi-m520 1gb
+
 TARGET_DEVICES += qcom_ipq8064-db149
 
 define Device/ruijie_rg-mtfi-m520
